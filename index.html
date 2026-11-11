@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>برای یلدای من 🍓</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #0c0a12;
+            color: #ffffff;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            animation: floatUp linear infinite;
+            bottom: -20px;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.7) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) scale(1.3) rotate(45deg); opacity: 0; }
+        }
+
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #09070f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #splash-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.1);
+            filter: blur(10px);
+        }
+
+        .splash-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ff6b9a;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(255, 107, 154, 0.4), 0 0 20px rgba(255, 107, 154, 0.2);
+            opacity: 0;
+            transform: scale(0.9);
+            animation: splashEnter 1s forwards cubic-bezier(0.4, 0, 0.2, 1), softPulse 2.5s 1s infinite ease-in-out;
+        }
+
+        @keyframes splashEnter {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes softPulse {
+            0%, 100% { transform: scale(1); text-shadow: 0 0 10px rgba(255, 107, 154, 0.4); }
+            50% { transform: scale(1.05); text-shadow: 0 0 20px rgba(255, 107, 154, 0.6); }
+        }
+
+        #main-container {
+            width: 90%;
+            max-width: 400px;
+            max-height: 98vh;
+            z-index: 1;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(30px) scale(0.95);
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-delay: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #main-container.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .names-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .name-item {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #ff75a0;
+            text-shadow: 0 0 10px rgba(255, 117, 160, 0.3);
+            animation: floatName 4s ease-in-out infinite alternate;
+        }
+
+        .name-item.k1 { animation-delay: 0s; }
+        .name-item.ya { animation-delay: 2s; }
+
+        .heart-icon {
+            font-size: 1.1rem;
+            animation: pulseHeart 1.5s infinite ease-in-out;
+        }
+
+        @keyframes floatName {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-5px); }
+        }
+
+        @keyframes pulseHeart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .section-card {
+            width: 100%;
+            background: rgba(30, 25, 45, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .date-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .date-details {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            color: #c4c4d4;
+            font-size: 0.85rem;
+        }
+
+        .date-details .highlight {
+            color: #ff75a0;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .timer-header {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .time-card {
+            background: rgba(22, 18, 33, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 10px 5px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 70px;
+        }
+
+        .time-value {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: #ff75a0;
+            text-shadow: 0 0 8px rgba(255, 117, 160, 0.25);
+            margin-bottom: 2px;
+            direction: ltr;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.5px;
+            width: 100%;
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.75rem;
+            color: #9090a8;
+            font-weight: 400;
+        }
+
+        .love-message {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .from-who {
+            font-size: 0.85rem;
+            color: #ff75a0;
+            font-weight: 700;
+        }
+
+        .footer-note {
+            font-size: 0.85rem;
+            color: #c0c0db;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+            text-align: center;
+            direction: ltr;
+            margin-top: 4px;
+            text-shadow: 0 0 10px rgba(255, 117, 160, 0.2);
+            animation: subtleWiggle 3s ease-in-out infinite;
+        }
+
+        @keyframes subtleWiggle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-4px) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hearts-bg" id="heartsBg"></div>
+
+    <div id="splash-screen">
+        <h1 class="splash-title">YALDA</h1>
+    </div>
+
+    <div id="main-container">
+
+        <div class="names-box">
+            <span class="name-item k1">ARAD</span>
+            <span class="heart-icon">🍓</span>
+            <span class="name-item ya">YALDA</span>
+        </div>
+
+        <div class="section-card">
+            <div class="date-title">
+                سالگرد آشناییمون 🫀
+            </div>
+            <div class="date-details">
+                <div>16 مهر 1405</div>
+                <div class="highlight">October 8, 2026</div>
+                <div>پنجشنبه - Thursday</div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="date-title">
+                تاریخ تولد یلدا 🎂
+            </div>
+            <div class="date-details">
+                <div>25 فروردین 1387</div>
+                <div class="highlight">April 13, 2008</div>
+                <div>یکشنبه - Sunday</div>
+            </div>
+        </div>
+
+        <div class="timer-header">
+            ما دقیقاً این‌قدر وقته که باهمیم: 🌹
+        </div>
+
+        <div class="timer-grid">
+            <div class="time-card">
+                <span class="time-value" id="daysVal">0</span>
+                <span class="time-label">روز</span>
+            </div>
+            <div class="time-card">
+                <span class="time-value" id="hoursVal">0</span>
+                <span class="time-label">ساعت</span>
+            </div>
+            <div class="time-card">
+                <span class="time-value" id="minutesVal">0</span>
+                <span class="time-label">دقیقه</span>
+            </div>
+            <div class="time-card">
+                <span class="time-value" id="secondsVal">0</span>
+                <span class="time-label">ثانیه</span>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="love-message">
+                خیلی دوست دارم 🍓
+            </div>
+            <div class="from-who">
+                ( از طرف آراد 🫀 )
+            </div>
+        </div>
+
+        <div class="footer-note">
+            🤍🍓🤍
+        </div>
+
+    </div>
+
+    <script>
+        const heartsContainer = document.getElementById('heartsBg');
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerText = '🍓';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (6 + Math.random() * 6) + 's';
+            heart.style.animationDelay = (Math.random() * 5) + 's';
+            heart.style.fontSize = (10 + Math.random() * 10) + 'px';
+            heartsContainer.appendChild(heart);
+        }
+
+        setTimeout(() => {
+            document.getElementById('splash-screen').classList.add('hide');
+            document.getElementById('main-container').classList.add('show');
+        }, 3200);
+
+        // 16 Mehr 1405 = October 8, 2026
+        const startDate = new Date('2026-10-08T00:00:00').getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+
+            if (diff > 0) {
+                const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const totalHours = Math.floor(diff / (1000 * 60 * 60));
+                const totalMinutes = Math.floor(diff / (1000 * 60));
+                const totalSeconds = Math.floor(diff / 1000);
+
+                document.getElementById('daysVal').innerText = totalDays.toLocaleString('en-US');
+                document.getElementById('hoursVal').innerText = totalHours.toLocaleString('en-US');
+                document.getElementById('minutesVal').innerText = totalMinutes.toLocaleString('en-US');
+                document.getElementById('secondsVal').innerText = totalSeconds.toLocaleString('en-US');
+            }
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+</html>
